@@ -1,4 +1,4 @@
-X-Or Specification
+X-Or Specification
 ==================
 
 Description:
