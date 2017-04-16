@@ -1,0 +1,22 @@
+Inputs: in1, in2, sel;
+Outputs: out;
+
+// 1. specify the components you want to use here
+Parts:
+  and2s AND,
+  and1s AND,
+  not NOT,
+  or OR
+  ;
+
+// 2. wire them up
+Wires:
+  in2 -> and2s.in1,
+  sel -> and2s.in2,
+                    and2s.out -> or.in2,
+                    and1s.out -> or.in1,
+                                 or.out -> out,
+  sel -> not.in,
+         not.out -> and1s.in2,
+             in1 -> and1s.in1
+  ;

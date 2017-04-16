@@ -1,0 +1,21 @@
+Inputs: carryIn, in1, in2;
+Outputs: out, carryOut;
+
+// 1. specify the components you want to use here
+Parts:
+  ha1 HALFADDER,
+  ha2 HALFADDER,
+  or OR
+  ;
+
+// 2. wire them up
+Wires:
+  in1 -> ha1.in1,
+  in2 -> ha1.in2,
+         ha1.out -> ha2.in1,
+         ha1.carry -> or.in2,
+         carryIn -> ha2.in2,
+                    ha2.carry -> or.in1,
+                    ha2.out -> out,
+  or.out -> carryOut
+  ;
