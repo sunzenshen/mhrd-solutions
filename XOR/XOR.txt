@@ -1,3 +1,4 @@
+```
 Inputs: in1, in2;
 Outputs: out;
 
@@ -18,3 +19,5 @@ Wires:
   nand.out -> and.in2,
   and.out -> out
   ;
+
+```
