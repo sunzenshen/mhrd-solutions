@@ -1,0 +1,38 @@
+Inputs: in[16], load, address[2];
+Outputs: out[16];
+
+// 1. specify the components you want to use here
+Parts:
+  not1 NOT, not2 NOT,
+  active4 AND, active3 AND, active2 AND, active1 AND,
+  load4 AND, load3 AND, load2 AND, load1 AND,
+  reg4 REGISTER16B, reg3 REGISTER16B, reg2 REGISTER16B, reg1 REGISTER16B,
+  mux4 MUX16B, mux3 MUX16B, mux2 MUX16B, mux1 MUX16B,
+  or1 OR16B, or2 OR16B, or3 OR16B ;
+
+// 2. wire them up
+Wires:
+  address[1]->not1.in, address[2]->not2.in,
+  in ->reg1.in, in->reg2.in, in->reg3.in, in->reg4.in,
+  0->mux1.in1, 0->mux2.in1, 0->mux3.in1, 0->mux4.in1,
+
+  load -> load1.in2, load -> load2.in2, load ->load3.in2, load ->load4.in2,
+
+  mux1.out->or1.in1, mux2.out->or1.in2, or1.out->or2.in1,
+  mux3.out->or2.in2, or2.out->or3.in1, mux4.out->or3.in2, or3.out->out,
+
+  active1.out->load1.in1, active2.out->load2.in1,
+  active3.out->load3.in1, active4.out->load4.in1,
+
+  load1.out->reg1.load, load2.out->reg2.load,
+  load3.out->reg3.load, load4.out->reg4.load,
+
+  reg1.out->mux1.in2, reg2.out->mux2.in2, reg3.out->mux3.in2, reg4.out->mux4.in2,
+
+  active1.out->mux1.sel, active2.out->mux2.sel,
+  active3.out->mux3.sel, active4.out->mux4.sel,
+
+  address[1]->active4.in1, address[2]->active4.in2,
+  address[2]->active3.in1, not1.out -> active3.in2,
+  not2.out->active2.in1,   address[1]->active2.in2,
+  not1.out->active1.in1,   not2.out->active1.in2 ;
