@@ -1,0 +1,18 @@
+Inputs: instr[16];
+Outputs: cToM, loadA, loadD, loadM, op1, op2[2], opCode[4], jmpIfZ, constant[15];
+
+Parts: not16 NOT, nand NAND, andA AND, activeA AND, notnand NOT, andD AND,
+  andM AND, muxM MUX, andjmp AND;
+
+Wires:
+  instr[16]->cToM, instr[1:15]->constant,
+  instr[7:10]->opCode, instr[11:12]->op2, instr[13]->op1,
+  andjmp.out->jmpIfZ, muxM.out->loadM, andD.out->loadD, activeA.out->loadA,
+  instr[6]->andjmp.in1, not16.out->andjmp.in2,
+  instr[16]->not16.in, not16.out->activeA.in2, not16.out->andD.in2,
+  andA.out->activeA.in1, notnand.out->andD.in1, nand.out->notnand.in,
+  instr[14]->andA.in1, nand.out->andA.in2,
+  instr[14]->nand.in1, instr[15]->nand.in2, nand.out->andM.in2,
+  instr[15]->andM.in1, andM.out->muxM.in1,
+  instr[16]->muxM.in2, instr[16]->muxM.sel
+  ;
