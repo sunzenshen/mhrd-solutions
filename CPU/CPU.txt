@@ -1,0 +1,33 @@
+Inputs: instr[16], data[16], reset;
+Outputs: write, dataAddr[16], instrAddr[16], result[16];
+
+Parts:
+  decoder DECODER, mReg REGISTER16B, aReg REGISTER16B, pc COUNTER16B, alu ALU16B,
+  jmpIfZAndZero AND, op2Mux MUX4W16B, op1Mux MUX16B, loadMmux MUX16B
+;
+
+Wires:
+  instr->decoder.instr,
+  reset->pc.reset,
+  pc.out->instrAddr,
+  decoder.loadD->write,
+  decoder.opCode->alu.opCode,
+  mReg.out->dataAddr,
+  alu.out->result,
+
+  alu.zero ->jmpIfZAndZero.in1, decoder.jmpIfZ->jmpIfZAndZero.in2,
+  jmpIfZAndZero.out->pc.load, mReg.out->pc.in,
+
+  decoder.op1->op1Mux.sel, op1Mux.out->alu.in1,
+  decoder.constant[1:5]->op1Mux.in2[1:5], aReg.out->op1Mux.in1,
+
+  decoder.op2->op2Mux.sel, op2Mux.out->alu.in2,
+  decoder.constant[1:5]->op2Mux.in1[1:5], aReg.out->op2Mux.in2,
+  mReg.out->op2Mux.in3, data->op2Mux.in4,
+
+  decoder.loadM->mReg.load, decoder.cToM->loadMmux.sel, loadMmux.out->mReg.in,
+  alu.out->loadMmux.in1, decoder.constant->loadMmux.in2[1:15],
+
+  decoder.loadA->aReg.load, alu.out->aReg.in
+
+;
